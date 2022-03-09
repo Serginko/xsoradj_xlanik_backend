@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  title: Autoservis - MTAA - xsoradj - xlanik
+  description: API dokumentácia k projektu
+  version: 1.0.0
+paths:
+  /api/v1/customers:
+    get:
+      tags:
+        - Zoznam používateľov
+      summary: Vráti zoznam všetkých používateľov.
+      responses:
+        '200':
+          description: Pole všetkých používateľov
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customers'
+    post:
+      tags:
+        - Vkladanie používateľa do DB
+      summary: Vytvorí nový záznam používateľa v databáze
+      responses:
+        '201':
+          description: Detail vytvoreného používateľa
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: Detaily validačnej chyby
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/customers/{id}:
+    get:
+      tags:
+        - Zobrazenie informácii o používateľovi
+      summary: Vráti informácie o používateľovi
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: unikátny identifikátor používateľa
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Používateľ
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Používateľ neexistuje
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/cars:
+    get:
+      tags:
+        - Zoznam vozidiel
+      summary: Vráti zoznam všetkých vozidiel
+      responses:
+        '200':
+          description: Pole všetkých vozidiel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cars'
+  /api/v1/cars/{id}:
+    get:
+      tags:
+        - Zobrazenie informácií o vozidle
+      summary: Vráti údaje o vozidle
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: unikátny identifikátor vozidla
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Informácie o vozidle
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Vozidlo neexistuje
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+        - Odstránenie vozidla z DB
+      summary: Odstráni vozidlo z DB
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Identifikátor Vozidla
+      responses:
+        '200':
+          description: Vozidlo bolo zmazané
+        '404':
+          description: Vozidlo so zadaným ID sa nenachádza v databáze
+    put:
+      tags:
+        - Úprava stavu vozidla
+      summary: Upraví údaje o Vozidle
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: unikátny identifikátor vozidla
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Upravený atribút
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Vozidlo neexistuje
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/technicians:
+    get:
+      tags:
+        - Zoznam technikov
+      summary: Vráti zoznam všetkých technikov
+      responses:
+        '200':
+          description: Pole všetkých technikov
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Technicians'
+  /api/v1/technicians/{id}:
+    get:
+      tags:
+        - Zobrazenie informácii o technikovi
+      summary: Vráti údaje o technikovi
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: unikátny identifikátor technika
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Informácie o technikovi
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Technik neexistuje
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    Cars:
+      properties:
+        id:
+          type: number
+          example: 1
+        customer_id:
+          type: number
+          example: 1
+        technician_id:
+          type: number
+          example: 1
+        brand:
+          type: string
+          example: BMW
+        model:
+          type: string
+          example: X3
+        year:
+          type: number
+          example: 2011
+        oilChange:
+          type: boolean
+          example: true
+        filterChange:
+          type: boolean
+          example: true
+        tyreChange:
+          type: boolean
+          example: true
+        engineService:
+          type: boolean
+          example: true
+        state:
+          type: string
+          example: not_finished
+        description:
+          type: string
+          example: velmi pokazene
+        image_url:
+          type: string
+          example: obrazok.jpg
+    Technicians:
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: ferko
+        cars:
+          type: array
+          example:
+            - 1
+            - 3
+            - 6
+    Customers:
+      properties:
+        id:
+          type: number
+          example: 2
+        name:
+          type: string
+          example: misko
+        phoneNumber:
+          type: string
+          example: 9045876541
+        email:
+          type: string
+          example: misko@miskovemail.com
+        register_date:
+          type: array
+          example: 12.08.2020
+        car_id:
+          type: number
+          example: 3
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: >-
+      https://virtserver.swaggerhub.com/Serginko/xsoradj_xlanik_APIdokumentacia/1.0.0
