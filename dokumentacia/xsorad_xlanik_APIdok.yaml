@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Autoservis - MTAA - xsoradj - xlanik
-  description: API dokumentácia k projektu
+  description: API dokumentácia k projektu. API dokumentacia vychádza zo šturktúry https://swagger.io/docs/specification/basic-structure/
   version: 1.0.0
 paths:
   /api/v1/customers:
@@ -80,6 +80,57 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Cars'
+    post:
+      tags:
+        - Vloženie auta do DB
+      summary: Vytvorí nový záznam používateľa v databáze
+      responses:
+        '201':
+          description: Detail vytvoreného používateľa
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: Detaily validačnej chyby
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/repairedCars:
+    get:
+      tags:
+        - Zoznam opravených vozidiel
+      summary: Vráti zoznam všetkých vozidiel
+      responses:
+        '200':
+          description: Pole všetkých vozidiel
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cars'
+    post:
+      tags:
+        - Vloženie auta do histórie DB
+      summary: Vytvorí nový záznam používateľa v databáze
+      responses:
+        '201':
+          description: Detail vytvoreného používateľa
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: Detaily validačnej chyby
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/cars/{id}:
     get:
       tags:
@@ -230,6 +281,57 @@ components:
         image_url:
           type: string
           example: obrazok.jpg
+        number_plate:
+          type: string
+          example: TT816DX
+    RepairedCars:
+      properties:
+        id:
+          type: number
+          example: 1
+        customer_id:
+          type: number
+          example: 1
+        technician_id:
+          type: number
+          example: 1
+        brand:
+          type: string
+          example: BMW
+        model:
+          type: string
+          example: X3
+        year:
+          type: number
+          example: 2011
+        oilChange:
+          type: boolean
+          example: true
+        filterChange:
+          type: boolean
+          example: true
+        tyreChange:
+          type: boolean
+          example: true
+        engineService:
+          type: boolean
+          example: true
+        state:
+          type: string
+          example: not_finished
+        description:
+          type: string
+          example: velmi pokazene
+        image_url:
+          type: string
+          example: obrazok.jpg
+        number_plate:
+          type: string
+          example: TT816DX
+        last_service:
+          type: integer
+          example: 22.12.2020
+      
     Technicians:
       properties:
         id:
@@ -238,12 +340,10 @@ components:
         name:
           type: string
           example: ferko
-        cars:
-          type: array
-          example:
-            - 1
-            - 3
-            - 6
+        password:
+          type: string
+          example: technik1
+
     Customers:
       properties:
         id:
@@ -258,12 +358,9 @@ components:
         email:
           type: string
           example: misko@miskovemail.com
-        register_date:
-          type: array
-          example: 12.08.2020
-        car_id:
-          type: number
-          example: 3
+        password:
+          type: string
+          example: silneheslo1337
 servers:
   - description: SwaggerHub API Auto Mocking
     url: >-
